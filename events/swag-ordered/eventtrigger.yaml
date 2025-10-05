@@ -1,0 +1,17 @@
+apiVersion: lib.projectsveltos.io/v1beta1
+kind: EventTrigger
+metadata:
+  name: swag-ordered-trigger
+spec:
+  sourceClusterSelector:
+    matchLabels:
+      role: deploy
+  eventSourceName: swag-ordered
+  oneForEvent: true
+  syncMode: ContinuousWithDriftDetection
+  cloudEventAction: Create
+  policyRefs:
+  - name: swag-ordered-job
+    namespace: default
+    kind: ConfigMap
+

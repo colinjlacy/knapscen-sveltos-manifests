@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: marketing-notified-job
+  namespace: default
+  annotations:
+    projectsveltos.io/instantiate: "ok"
+data:
+  job.yaml: |
+    apiVersion: batch/v1
+    kind: Job
+    metadata:
+      name: marketing-notified-{{ .CloudEvent.subject }}
+      namespace: knapscen-jobs
+    spec:
+      ttlSecondsAfterFinished: 300
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: notify-marketing
+            image: knapscen/notify-marketing:latest
+            env:
+            - name: CUSTOMER_ID
+              value: "{{ .CloudEvent.subject }}"
+            - name: CUSTOMER_NAME
+              value: "{{ .CloudEvent.data.customer_name }}"
+            - name: SUBSCRIPTION_TIER
+              value: "{{ .CloudEvent.data.subscription_tier }}"
+            - name: USER_COUNT
+              value: "{{ .CloudEvent.data.user_count }}"
+            - name: EVENT_ID
+              value: "{{ .CloudEvent.id }}"
+            - name: EVENT_TIME
+              value: "{{ .CloudEvent.time }}"
+

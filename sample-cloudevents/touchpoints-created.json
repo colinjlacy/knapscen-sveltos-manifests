@@ -1,0 +1,15 @@
+{
+  "specversion": "1.0",
+  "type": "disco.knapscen.touchpoints.created",
+  "source": "knapscen.disco",
+  "subject": "550e8400-e29b-41d4-a716-446655440000",
+  "id": "evt-touchpoints-001",
+  "time": "2025-10-04T12:05:00Z",
+  "datacontenttype": "application/json",
+  "data": {
+    "customer_name": "TechCorp Solutions",
+    "subscription_tier": "far-out",
+    "welcome_outreach": "2025-10-05"
+  }
+}
+

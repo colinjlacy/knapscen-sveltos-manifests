@@ -1,0 +1,10 @@
+apiVersion: lib.projectsveltos.io/v1beta1
+kind: EventSource
+metadata:
+  name: swag-ordered
+spec:
+  messagingMatchCriteria:
+  - subject: "swag-ordered"
+    cloudEventSource: "knapscen.disco"
+    cloudEventType: "disco.knapscen.swag.ordered"
+

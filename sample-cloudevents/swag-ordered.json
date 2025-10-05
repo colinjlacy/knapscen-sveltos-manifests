@@ -1,0 +1,15 @@
+{
+  "specversion": "1.0",
+  "type": "disco.knapscen.swag.ordered",
+  "source": "knapscen.disco",
+  "subject": "550e8400-e29b-41d4-a716-446655440000",
+  "id": "evt-swag-001",
+  "time": "2025-10-04T12:04:00Z",
+  "datacontenttype": "application/json",
+  "data": {
+    "customer_name": "TechCorp Solutions",
+    "subscription_tier": "far-out",
+    "shipping_address": "123 Tech Street, San Francisco, CA 94105"
+  }
+}
+

@@ -1,0 +1,16 @@
+{
+  "specversion": "1.0",
+  "type": "disco.knapscen.user.saved",
+  "source": "knapscen.disco",
+  "subject": "550e8400-e29b-41d4-a716-446655440000",
+  "id": "evt-user-001",
+  "time": "2025-10-04T12:01:00Z",
+  "datacontenttype": "application/json",
+  "data": {
+    "user_id": "650e8400-e29b-41d4-a716-446655440001",
+    "name": "John Smith",
+    "email": "john.smith@techcorp.com",
+    "role": "customer_account_owner"
+  }
+}
+

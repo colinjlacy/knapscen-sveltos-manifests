@@ -1,0 +1,10 @@
+apiVersion: lib.projectsveltos.io/v1beta1
+kind: EventSource
+metadata:
+  name: marketing-notified
+spec:
+  messagingMatchCriteria:
+  - subject: "marketing-notified"
+    cloudEventSource: "knapscen.disco"
+    cloudEventType: "disco.knapscen.marketing.notified"
+

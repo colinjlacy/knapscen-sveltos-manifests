@@ -1,0 +1,15 @@
+{
+  "specversion": "1.0",
+  "type": "disco.knapscen.email.welcome.sent",
+  "source": "knapscen.disco",
+  "subject": "550e8400-e29b-41d4-a716-446655440000",
+  "id": "evt-email-001",
+  "time": "2025-10-04T12:02:00Z",
+  "datacontenttype": "application/json",
+  "data": {
+    "customer_name": "TechCorp Solutions",
+    "primary_email": "john.smith@techcorp.com",
+    "subscription_tier": "far-out"
+  }
+}
+

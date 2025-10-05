@@ -1,0 +1,11 @@
+apiVersion: lib.projectsveltos.io/v1beta1
+kind: EventSource
+metadata:
+  name: customer-saved
+  namespace: projectsveltos
+spec:
+  collectResources: true
+  messagingMatchCriteria:
+  - subject: "customer-saved"
+    cloudEventSource: "knapscen.disco"
+

@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: swag-ordered-job
+  namespace: default
+  annotations:
+    projectsveltos.io/instantiate: "ok"
+data:
+  job.yaml: |
+    apiVersion: batch/v1
+    kind: Job
+    metadata:
+      name: swag-ordered-{{ .CloudEvent.subject }}
+      namespace: knapscen-jobs
+    spec:
+      ttlSecondsAfterFinished: 300
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: order-swag
+            image: knapscen/order-swag:latest
+            env:
+            - name: CUSTOMER_ID
+              value: "{{ .CloudEvent.subject }}"
+            - name: CUSTOMER_NAME
+              value: "{{ .CloudEvent.data.customer_name }}"
+            - name: SUBSCRIPTION_TIER
+              value: "{{ .CloudEvent.data.subscription_tier }}"
+            - name: SHIPPING_ADDRESS
+              value: "{{ .CloudEvent.data.shipping_address }}"
+            - name: EVENT_ID
+              value: "{{ .CloudEvent.id }}"
+            - name: EVENT_TIME
+              value: "{{ .CloudEvent.time }}"
+

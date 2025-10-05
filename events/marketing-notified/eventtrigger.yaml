@@ -1,0 +1,17 @@
+apiVersion: lib.projectsveltos.io/v1beta1
+kind: EventTrigger
+metadata:
+  name: marketing-notified-trigger
+spec:
+  sourceClusterSelector:
+    matchLabels:
+      role: deploy
+  eventSourceName: marketing-notified
+  oneForEvent: true
+  syncMode: ContinuousWithDriftDetection
+  cloudEventAction: Create
+  policyRefs:
+  - name: marketing-notified-job
+    namespace: default
+    kind: ConfigMap
+

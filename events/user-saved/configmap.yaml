@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: user-saved-job
+  namespace: projectsveltos
+  annotations:
+    projectsveltos.io/instantiate: ok
+data:
+  job.yaml: |
+    apiVersion: batch/v1
+    kind: Job
+    metadata:
+      name: user-saved-{{ .CloudEvent.subject }}
+      namespace: default
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: send-welcome-email
+            image: ghcr.io/colinjlacy/knapscen-email-notifications:latest
+            envFrom:
+            - secretRef:
+                name: knapscen-config
+            env:
+            - name: USER_NAME
+              value: "{{ .CloudEvent.data.user_name }}"
+            - name: USER_EMAIL
+              value: "{{ .CloudEvent.data.user_email }}"
+            - name: USER_ROLE
+              value: "{{ .CloudEvent.data.user_role }}"
+            - name: COMPANY_NAME
+              value: "{{ .CloudEvent.data.customer_name }}"
+            - name: EMAIL_TEMPLATE
+              value: "{{ .CloudEvent.data.email_template }}"
+
+

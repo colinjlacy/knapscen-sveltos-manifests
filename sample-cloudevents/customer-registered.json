@@ -1,0 +1,32 @@
+{
+  "specversion": "1.0",
+  "type": "disco.knapscen.customer.registered",
+  "source": "knapscen.disco",
+  "subject": "550e8400-e29b-41d4-a716-446655440000",
+  "id": "evt-customer-20251004120000",
+  "time": "2025-10-04T12:00:00Z",
+  "datacontenttype": "application/json",
+  "data": {
+    "name": "TechCorp Solutions",
+    "subscription_tier": "far-out",
+    "users": [
+      {
+        "name": "John Smith",
+        "email": "john.smith@techcorp.com",
+        "role": "customer_account_owner"
+      },
+      {
+        "name": "Jane Doe",
+        "email": "jane.doe@techcorp.com",
+        "role": "admin_user"
+      },
+      {
+        "name": "Jim Beam",
+        "email": "jim.beam@techcorp.com",
+        "role": "generic_user"
+      }
+    ]
+  }
+}
+
+

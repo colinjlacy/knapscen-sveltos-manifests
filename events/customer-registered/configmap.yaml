@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: customer-registered-job
+  namespace: projectsveltos
+  annotations:
+    projectsveltos.io/instantiate: ok
+data:
+  job.yaml: |
+    apiVersion: batch/v1
+    kind: Job
+    metadata:
+      name: customer-registered-{{ .CloudEvent.subject }}
+      namespace: default
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: knapscen-register-corporate-customer
+            image: ghcr.io/colinjlacy/knapscen-register-corporate-customer:latest
+            envFrom:
+            - secretRef:
+                name: knapscen-config
+            env:
+            - name: COMPANY_NAME
+              value: "{{ .CloudEvent.data.name }}"
+            - name: SUBSCRIPTION_TIER
+              value: "{{ .CloudEvent.data.subscription_tier }}"
+            - name: EVENT_ID
+              value: "{{ .CloudEvent.id }}"
+            - name: EVENT_TIME
+              value: "{{ .CloudEvent.time }}"

@@ -1,0 +1,18 @@
+apiVersion: lib.projectsveltos.io/v1beta1
+kind: EventTrigger
+metadata:
+  name: user-saved-trigger
+  namespace: projectsveltos
+spec:
+  sourceClusterSelector:
+    matchLabels:
+      role: deploy
+  eventSourceName: user-saved
+  oneForEvent: true
+  syncMode: Continuous
+  cloudEventAction: Create
+  policyRefs:
+  - name: user-saved-job
+    namespace: projectsveltos
+    kind: ConfigMap
+

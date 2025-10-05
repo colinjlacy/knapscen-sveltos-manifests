@@ -1,0 +1,10 @@
+apiVersion: lib.projectsveltos.io/v1beta1
+kind: EventSource
+metadata:
+  name: customer-registered
+  namespace: projectsveltos
+spec:
+  collectResources: true
+  messagingMatchCriteria:
+  - subject: "customer-registered"
+    cloudEventSource: "knapscen.disco"
