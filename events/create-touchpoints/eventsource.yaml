@@ -1,0 +1,11 @@
+apiVersion: lib.projectsveltos.io/v1beta1
+kind: EventSource
+metadata:
+  name: create-touchpoints
+  namespace: projectsveltos
+spec:
+  collectResources: true
+  messagingMatchCriteria:
+  - subject: "customer-saved"
+    cloudEventSource: "knapscen.disco"
+
