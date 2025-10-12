@@ -21,6 +21,7 @@ data:
           containers:
           - name: knapscen-save-user-data
             image: ghcr.io/colinjlacy/knapscen-register-users:latest
+            imagePullPolicy: Always
             envFrom:
             - secretRef:
                 name: knapscen-config
@@ -31,6 +32,8 @@ data:
               value: "{{ $user.name }}"
             - name: USER_EMAIL
               value: "{{ $user.email }}"
-            - name: USER_ROLE
+            - name: ROLE_NAME
               value: "{{ $user.role }}"
+            - name: NATS_SUBJECT
+              value: "user-saved"
     {{ end }}

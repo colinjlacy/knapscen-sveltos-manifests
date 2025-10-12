@@ -19,15 +19,20 @@ data:
           containers:
           - name: knapscen-register-corporate-customer
             image: ghcr.io/colinjlacy/knapscen-register-corporate-customer:latest
+            imagePullPolicy: Always
             envFrom:
             - secretRef:
                 name: knapscen-config
             env:
             - name: COMPANY_NAME
               value: "{{ .CloudEvent.data.name }}"
+            - name: COMPANY_DATA
+              value: {{ .CloudEvent.data | toJson | quote }}
             - name: SUBSCRIPTION_TIER
               value: "{{ .CloudEvent.data.subscription_tier }}"
             - name: EVENT_ID
               value: "{{ .CloudEvent.id }}"
             - name: EVENT_TIME
               value: "{{ .CloudEvent.time }}"
+            - name: NATS_SUBJECT
+              value: "customer-saved"

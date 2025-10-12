@@ -18,7 +18,7 @@
 set -e
 
 # Configuration
-NATS_SERVER="${NATS_SERVER:-nats://127.0.0.1:40443}"
+NATS_SERVER="${NATS_SERVER:-nats://127.0.0.1:38897}"
 NATS_USER="${NATS_USER:-admin}"
 NATS_PASSWORD="${NATS_PASSWORD:-admin}"
 NATS_SUBJECT="customer-registered"
@@ -29,6 +29,53 @@ TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
 # Generate or use provided customer ID
 CUSTOMER_ID="${CUSTOMER_ID:-$(uuidgen | tr '[:upper:]' '[:lower:]')}"
+
+# Arrays for random data generation
+COMPANY_TYPES=("Solutions" "Technologies" "Systems" "Enterprises" "Labs" "Ventures" "Dynamics" "Innovations" "Digital" "Cloud" "Data" "AI" "Software" "Services" "Group" "Corp" "Inc" "LLC" "Ltd")
+COMPANY_ADJECTIVES=("Advanced" "Global" "Smart" "Dynamic" "Innovative" "Digital" "Future" "Next" "Prime" "Elite" "Pro" "Tech" "Data" "Cloud" "AI" "Quantum" "Cyber" "Virtual" "Agile" "Modern")
+FIRST_NAMES=("Alex" "Jordan" "Taylor" "Casey" "Morgan" "Riley" "Avery" "Quinn" "Blake" "Cameron" "Drew" "Emery" "Finley" "Hayden" "Jamie" "Kendall" "Logan" "Parker" "Reese" "Sage" "Skyler" "Tyler" "Val" "River" "Phoenix" "Rowan" "Sage" "Dakota" "Indigo" "Ocean")
+LAST_NAMES=("Smith" "Johnson" "Williams" "Brown" "Jones" "Garcia" "Miller" "Davis" "Rodriguez" "Martinez" "Hernandez" "Lopez" "Gonzalez" "Wilson" "Anderson" "Thomas" "Taylor" "Moore" "Jackson" "Martin" "Lee" "Perez" "Thompson" "White" "Harris" "Sanchez" "Clark" "Ramirez" "Lewis" "Robinson")
+SUBSCRIPTION_TIERS=("basic" "groovy" "far-out")
+
+# Function to get random element from array (portable)
+get_random_element() {
+  local array=("$@")
+  local array_length=${#array[@]}
+  local random_index=$((RANDOM % array_length))
+  echo "${array[$random_index]}"
+}
+
+# Function to generate random company name
+generate_company_name() {
+  local adjective=$(get_random_element "${COMPANY_ADJECTIVES[@]}")
+  local type=$(get_random_element "${COMPANY_TYPES[@]}")
+  echo "${adjective} ${type}"
+}
+
+# Function to generate random user with specific role
+generate_user() {
+  local first_name=$(get_random_element "${FIRST_NAMES[@]}")
+  local last_name=$(get_random_element "${LAST_NAMES[@]}")
+  local role="$1"  # Role is passed as parameter
+  local company_domain=$(echo "$COMPANY_NAME" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]//g')
+  local email="$(echo "${first_name}" | tr '[:upper:]' '[:lower:]').$(echo "${last_name}" | tr '[:upper:]' '[:lower:]')@${company_domain}.com"
+  
+  echo "      {
+        \"name\": \"${first_name} ${last_name}\",
+        \"email\": \"${email}\",
+        \"role\": \"${role}\"
+      }"
+}
+
+# Generate random data
+COMPANY_NAME=$(generate_company_name)
+SUBSCRIPTION_TIER=$(get_random_element "${SUBSCRIPTION_TIERS[@]}")
+
+# Generate exactly 3 users with specific roles
+# 1 customer_account_owner + 2 admin_user
+USERS_JSON="$(generate_user "customer_account_owner"),
+$(generate_user "admin_user"),
+$(generate_user "admin_user")"
 
 # Generate CloudEvent JSON
 CLOUDEVENT_JSON=$(cat << EOF
@@ -41,24 +88,10 @@ CLOUDEVENT_JSON=$(cat << EOF
   "time": "${TIME}",
   "datacontenttype": "application/json",
   "data": {
-    "name": "TechCorp Solutions",
-    "subscription_tier": "far-out",
+    "name": "${COMPANY_NAME}",
+    "subscription_tier": "${SUBSCRIPTION_TIER}",
     "users": [
-      {
-        "name": "John Smith",
-        "email": "john.smith@techcorp.com",
-        "role": "customer_account_owner"
-      },
-      {
-        "name": "Jane Doe",
-        "email": "jane.doe@techcorp.com",
-        "role": "admin_user"
-      },
-      {
-        "name": "Jim Beam",
-        "email": "jim.beam@techcorp.com",
-        "role": "generic_user"
-      }
+${USERS_JSON}
     ]
   }
 }
@@ -74,6 +107,11 @@ echo "NATS Subject:  ${NATS_SUBJECT}"
 echo "Customer ID:   ${CUSTOMER_ID}"
 echo "Event ID:      evt-customer-${TIMESTAMP}"
 echo "Timestamp:     $(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+echo ""
+echo "Generated Data:"
+echo "  Company:      ${COMPANY_NAME}"
+echo "  Tier:         ${SUBSCRIPTION_TIER}"
+echo "  Users:        3 (1 owner + 2 admins)"
 echo "=================================================="
 echo ""
 echo "CloudEvent JSON:"
@@ -90,13 +128,13 @@ nats pub "${NATS_SUBJECT}" "${CLOUDEVENT_JSON}" \
 
 # Check if publish was successful
 if [ $? -eq 0 ]; then
-  echo "✅ Successfully published customer registration event!"
+  echo "✅ Successfully published customer registration event for '${COMPANY_NAME}'!"
   echo ""
   echo "To monitor the job execution, run:"
-  echo "  kubectl get jobs -n knapscen-jobs -w"
+  echo "  kubectl get jobs -n default -w"
   echo ""
   echo "To view job logs, run:"
-  echo "  kubectl logs -n knapscen-jobs job/customer-saved-${CUSTOMER_ID}"
+  echo "  kubectl logs -n default job/customer-registered-${CUSTOMER_ID}"
 else
   echo "❌ Failed to publish event to NATS"
   exit 1

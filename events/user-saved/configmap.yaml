@@ -27,11 +27,13 @@ data:
               value: "{{ .CloudEvent.data.user_name }}"
             - name: USER_EMAIL
               value: "{{ .CloudEvent.data.user_email }}"
-            - name: USER_ROLE
+            - name: ROLE_NAME
               value: "{{ .CloudEvent.data.user_role }}"
-            - name: COMPANY_NAME
+            - name: CUSTOMER_NAME
               value: "{{ .CloudEvent.data.customer_name }}"
             - name: EMAIL_TEMPLATE
               value: "{{ .CloudEvent.data.email_template }}"
+            - name: NATS_SUBJECT
+              value: "welcome-email-sent"
 
 

@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: create-touchpoints-job
+  namespace: projectsveltos
+  annotations:
+    projectsveltos.io/instantiate: ok
+data:
+  job.yaml: |
+    apiVersion: batch/v1
+    kind: Job
+    metadata:
+      name: create-touchpoints-{{ .CloudEvent.subject }}
+      namespace: default
+    spec:
+      ttlSecondsAfterFinished: 300
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: create-touchpoints
+            image: ghcr.io/colinjlacy/knapscen-create-customer-touchpoints:latest
+            imagePullPolicy: Always
+            envFrom:
+            - secretRef:
+                name: knapscen-config
+            env:
+            - name: CUSTOMER_NAME
+              value: "{{ .CloudEvent.data.name }}"
+            - name: NATS_SUBJECT
+              value: "touchpoints-created"
+

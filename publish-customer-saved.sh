@@ -18,7 +18,7 @@
 set -e
 
 # Configuration
-NATS_SERVER="${NATS_SERVER:-nats://127.0.0.1:40443}"
+NATS_SERVER="${NATS_SERVER:-nats://127.0.0.1:38897}"
 NATS_USER="${NATS_USER:-admin}"
 NATS_PASSWORD="${NATS_PASSWORD:-admin}"
 NATS_SUBJECT="${NATS_SUBJECT:-customer-saved}"
