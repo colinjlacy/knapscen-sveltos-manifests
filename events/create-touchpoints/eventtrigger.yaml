@@ -10,7 +10,7 @@ spec:
   eventSourceName: create-touchpoints
   oneForEvent: true
   syncMode: Continuous
-  cloudEventAction: Create
+  cloudEventAction: '{{if eq .CloudEvent.data.user_role "customer_account_owner"}}Create{{end}}'
   policyRefs:
   - name: create-touchpoints-job
     namespace: projectsveltos

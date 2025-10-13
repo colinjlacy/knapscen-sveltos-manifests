@@ -6,6 +6,6 @@ metadata:
 spec:
   collectResources: true
   messagingMatchCriteria:
-  - subject: "customer-saved"
+  - subject: "user-saved"
     cloudEventSource: "knapscen.disco"
 

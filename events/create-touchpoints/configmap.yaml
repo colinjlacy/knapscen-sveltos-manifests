@@ -26,7 +26,7 @@ data:
                 name: knapscen-config
             env:
             - name: CUSTOMER_NAME
-              value: "{{ .CloudEvent.data.name }}"
+              value: "{{ .CloudEvent.data.customer_name }}"
             - name: NATS_SUBJECT
               value: "touchpoints-created"
 
