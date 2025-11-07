@@ -8,4 +8,4 @@ spec:
   messagingMatchCriteria:
   - subject: "user-saved"
     cloudEventSource: "knapscen.disco"
-
+    cloudEventType: "disco.knapscen.user.saved"

@@ -2,6 +2,7 @@ apiVersion: lib.projectsveltos.io/v1beta1
 kind: EventSource
 metadata:
   name: welcome-email-sent
+  namespace: projectsveltos
 spec:
   messagingMatchCriteria:
   - subject: "welcome-email-sent"

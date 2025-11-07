@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: welcome-email-job
-  namespace: default
+  namespace: projectsveltos
   annotations:
     projectsveltos.io/instantiate: "ok"
 data:

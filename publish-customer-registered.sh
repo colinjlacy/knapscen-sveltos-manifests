@@ -18,7 +18,7 @@
 set -e
 
 # Configuration
-NATS_SERVER="${NATS_SERVER:-nats://127.0.0.1:38897}"
+NATS_SERVER="${NATS_SERVER:-nats://k8s-nats-nats-b888b10971-da9b11825b3d2cee.elb.us-east-2.amazonaws.com:4222}"
 NATS_USER="${NATS_USER:-admin}"
 NATS_PASSWORD="${NATS_PASSWORD:-admin}"
 NATS_SUBJECT="customer-registered"
